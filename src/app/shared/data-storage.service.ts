@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {RecipeService} from "../recipes/recipe.service";
 import {Recipe} from "../recipes/recipe.model";
-import {exhaustMap, map, take, tap} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {AuthService} from "../auth/auth.service";
 
 @Injectable({providedIn: 'root'})
@@ -21,7 +21,6 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-
     return this.http
       .get<Recipe[]>(
         'https://recipebook-shoppinglist-5da6f-default-rtdb.firebaseio.com/recipes.json'
