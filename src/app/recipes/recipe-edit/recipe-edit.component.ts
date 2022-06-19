@@ -64,7 +64,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, Validators.required),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
-      'websiteURL': new FormControl(recipeWebsiteURL, Validators.required),
+      'websiteURL': new FormControl(recipeWebsiteURL),
       'description': new FormControl(recipeDescription, Validators.required),
       'ingredients': recipeIngredients
     });
@@ -138,12 +138,19 @@ export class RecipeEditComponent implements OnInit {
           console.log(error);
         },
         () => {
-          console.log("COMPLETE:")
+          console.log("COMPLETE:");
           console.log(this.recipeFromURL);
+
+          for(let counter in this.recipeFromURL.ingredients) {
+            this.onAddIngredient();
+          }
+
           this.recipeForm.patchValue({
             'name': this.recipeFromURL.name,
-            'imagePath': this.recipeFromURL.imagePath
-          })
+            'imagePath': this.recipeFromURL.imagePath,
+            'description': this.recipeFromURL.description,
+            'ingredients': this.recipeFromURL.ingredients
+          });
         });
   }
 }
