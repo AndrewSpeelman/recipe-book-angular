@@ -7,11 +7,10 @@ export class Recipe {
   public websiteURL: string;
   public ingredients: Ingredient[];
 
-  public prepTime: String;
-  public cookTime: String;
-  public totalTime: String;
-  public recipeYield: String;
-
+  public prepTime: string;
+  public cookTime: string;
+  public totalTime: string;
+  public servings: string;
 
   constructor(name: string,
               description: string,
@@ -29,7 +28,7 @@ export class Recipe {
     this.prepTime = prepTime;
     this.cookTime = cookTime;
     this.totalTime = totalTime;
-    this.recipeYield = recipeYield;
+    this.servings = recipeYield;
     this.ingredients = ingredients;
   }
 }
