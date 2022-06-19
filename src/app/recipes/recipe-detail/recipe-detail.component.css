@@ -1,0 +1,9 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.center-image {
+  display: flex;
+  justify-content: center
+}

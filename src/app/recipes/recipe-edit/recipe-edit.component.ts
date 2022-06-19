@@ -37,15 +37,25 @@ export class RecipeEditComponent implements OnInit {
   private initForm() {
     let recipeName = '';
     let recipeImagePath = '';
-    let recipeWebsiteURL = '';
+    let websiteURL = '';
     let recipeDescription = '';
     let recipeIngredients = new FormArray([]);
+    let prepTime = '';
+    let cookTime = '';
+    let totalTime = '';
+    let servings = '';
 
     if (this.editMode) {
       const recipe = this.recipeService.getRecipe(this.id);
       recipeName = recipe.name;
+      websiteURL = recipe.websiteURL;
       recipeImagePath = recipe.imagePath;
       recipeDescription = recipe.description;
+      prepTime = recipe.prepTime;
+      cookTime = recipe.cookTime;
+      totalTime = recipe.totalTime;
+      servings = recipe.servings;
+
       if (recipe['ingredients']) {
         for (let ingredient of recipe.ingredients) {
           recipeIngredients.push(
@@ -64,9 +74,13 @@ export class RecipeEditComponent implements OnInit {
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, Validators.required),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
-      'websiteURL': new FormControl(recipeWebsiteURL),
+      'websiteURL': new FormControl(websiteURL),
       'description': new FormControl(recipeDescription, Validators.required),
-      'ingredients': recipeIngredients
+      'ingredients': recipeIngredients,
+      'prepTime':  new FormControl(prepTime),
+      'cookTime':  new FormControl(cookTime),
+      'totalTime':  new FormControl(totalTime),
+      'servings':  new FormControl(servings)
     });
   }
 
@@ -149,7 +163,11 @@ export class RecipeEditComponent implements OnInit {
             'name': this.recipeFromURL.name,
             'imagePath': this.recipeFromURL.imagePath,
             'description': this.recipeFromURL.description,
-            'ingredients': this.recipeFromURL.ingredients
+            'prepTime': this.recipeFromURL.prepTime,
+            'cookTime': this.recipeFromURL.cookTime,
+            'totalTime': this.recipeFromURL.totalTime,
+            'servings': this.recipeFromURL.servings,
+            'ingredients': this.recipeFromURL.ingredients,
           });
         });
   }

@@ -67,6 +67,51 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-xs-3">
+          <div class="form-group">
+            <label for="prepTime">Prep Time</label>
+            <input
+              type="text"
+              id="prepTime"
+              formControlName="prepTime"
+              class="form-control">
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="form-group">
+            <label for="cookTime">Cook Time</label>
+            <input
+              type="text"
+              id="cookTime"
+              formControlName="cookTime"
+              class="form-control">
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="form-group">
+            <label for="totalTime">Total Time</label>
+            <input
+              type="text"
+              id="totalTime"
+              formControlName="totalTime"
+              class="form-control">
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <div class="form-group">
+            <label for="servings">Servings</label>
+            <input
+              type="text"
+              id="servings"
+              formControlName="servings"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-xs-12" formArrayName="ingredients">
           <div class="row"
                *ngFor="let ingredientCtrl of controls(); let i = index"
