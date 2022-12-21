@@ -40,6 +40,7 @@ export class RecipeEditComponent implements OnInit {
     let websiteURL = '';
     let recipeDescription = '';
     let recipeIngredients = new FormArray([]);
+    let recipeInstructions = new FormArray([]);
     let prepTime = '';
     let cookTime = '';
     let totalTime = '';
@@ -66,7 +67,18 @@ export class RecipeEditComponent implements OnInit {
                 Validators.pattern(/^[1-9]+[0-9]*$/)
               ])
             })
-          );
+          )
+        }
+      }
+
+      if (recipe['instructions']) {
+        for (let instruction of recipe.instructions) {
+          //TODO: #14. Shouldn't have to do 'instruction.instruction'.
+          recipeInstructions.push(
+            new FormGroup({
+              'instruction': new FormControl(instruction.instruction, Validators.required)
+            })
+          )
         }
       }
     }
@@ -77,10 +89,11 @@ export class RecipeEditComponent implements OnInit {
       'websiteURL': new FormControl(websiteURL),
       'description': new FormControl(recipeDescription, Validators.required),
       'ingredients': recipeIngredients,
-      'prepTime':  new FormControl(prepTime),
-      'cookTime':  new FormControl(cookTime),
-      'totalTime':  new FormControl(totalTime),
-      'servings':  new FormControl(servings)
+      'instructions': recipeInstructions,
+      'prepTime': new FormControl(prepTime),
+      'cookTime': new FormControl(cookTime),
+      'totalTime': new FormControl(totalTime),
+      'servings': new FormControl(servings)
     });
   }
 
@@ -93,8 +106,12 @@ export class RecipeEditComponent implements OnInit {
     this.onCancel();
   }
 
-  controls() {
-    return (<FormArray>this.recipeForm.get('ingredients')).controls;
+  ingredientControl() {
+    return (<FormArray>this.recipeForm.get('ingredients')).controls
+  }
+
+  instructionControl() {
+    return (<FormArray>this.recipeForm.get('instructions')).controls
   }
 
   onAddIngredient() {
@@ -105,6 +122,14 @@ export class RecipeEditComponent implements OnInit {
           Validators.required,
           Validators.pattern(/^[1-9]+[0-9]*$/)
         ])
+      })
+    )
+  }
+
+  onAddInstruction() {
+    (<FormArray>this.recipeForm.get('instructions')).push(
+      new FormGroup({
+        'instruction': new FormControl(null, Validators.required)
       })
     )
   }
@@ -131,11 +156,19 @@ export class RecipeEditComponent implements OnInit {
     this.recipeBackendService.getRecipe(url)
       .subscribe((data: Recipe) => {
           console.log(data);
-          let recipeIngredients = [];
-          let ingredients = data['http://schema.org/recipeIngredient'];
+          let recipeIngredients = []
+          let ingredients = data['http://schema.org/recipeIngredient']
+
           for (let ingredient of ingredients) {
-            recipeIngredients.push(new Ingredient(ingredient, 1));
+            recipeIngredients.push(new Ingredient(ingredient, 1))
           }
+
+          let instructions = data['http://schema.org/recipeInstructions']
+          let recipeInstructions = [];
+          for (let instruction of instructions.values()) {
+            recipeInstructions.push(instruction['http://schema.org/text'])
+          }
+
           this.recipeFromURL = new Recipe(
             data['http://schema.org/name'],
             data['http://schema.org/description'],
@@ -145,7 +178,8 @@ export class RecipeEditComponent implements OnInit {
             data['http://schema.org/cookTime'],
             data['http://schema.org/totalTime'],
             data['http://schema.org/recipeYield'],
-            recipeIngredients);
+            recipeIngredients,
+            recipeInstructions);
         },
         error => {
           console.log("ERROR");
@@ -155,7 +189,7 @@ export class RecipeEditComponent implements OnInit {
           console.log("COMPLETE:");
           console.log(this.recipeFromURL);
 
-          for(let counter in this.recipeFromURL.ingredients) {
+          for (let counter in this.recipeFromURL.ingredients) {
             this.onAddIngredient();
           }
 
@@ -168,6 +202,7 @@ export class RecipeEditComponent implements OnInit {
             'totalTime': this.recipeFromURL.totalTime,
             'servings': this.recipeFromURL.servings,
             'ingredients': this.recipeFromURL.ingredients,
+            'instructions': this.recipeFromURL.instructions
           });
         });
   }
