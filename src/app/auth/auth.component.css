@@ -1,0 +1,6 @@
+.center-box {
+  display: flex;
+  justify-content: flex-start;
+  justify-items: center;
+  width: 100%;
+}
