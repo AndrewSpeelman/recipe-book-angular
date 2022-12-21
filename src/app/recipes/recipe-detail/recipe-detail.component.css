@@ -7,3 +7,8 @@
   display: flex;
   justify-content: center
 }
+
+.servings-and-times {
+  display: flex;
+  justify-content: flex-end;
+}
