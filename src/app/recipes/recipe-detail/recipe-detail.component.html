@@ -15,7 +15,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-3">
+  <div class="col-xs-2">
     <div class="btn-group col-xs-6" appDropdown>
       <button type="button" class="btn btn-primary dropdown-toggle">
         Manage Recipe
@@ -29,28 +29,34 @@
     </div>
   </div>
 
-  <div class="col-xs-2">
-    <label>Servings:</label>
-    {{recipe.servings}}
+  <div class="servings-and-times col-xs-10">
+    <div class="col-xs-2">
+      <div class="row">
+        <label>Servings:</label>
+        {{recipe.servings}}
+      </div>
+      <div class="row">
+        <label>Total Time:</label>
+        {{recipe.totalTime}}
+      </div>
+    </div>
+
+
+    <div class="col-xs-2">
+      <div class="row">
+        <label>Cook Time:</label>
+        {{recipe.cookTime}}
+      </div>
+      <div class="row">
+        <label>Prep Time:</label>
+        {{recipe.prepTime}}
+      </div>
+    </div>
   </div>
 
-  <div class="col-xs-2">
-    <label>Prep Time:</label>
-    {{recipe.prepTime}}
-  </div>
-
-  <div class="col-xs-2">
-    <label>Cook Time:</label>
-    {{recipe.cookTime}}
-  </div>
-
-  <div class="col-xs-2">
-    <label>Total Time:</label>
-    {{recipe.totalTime}}
-  </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-bottom: 15px; margin-top: 15px">
   <div class="col-xs-12">
     {{recipe.description}}
   </div>
