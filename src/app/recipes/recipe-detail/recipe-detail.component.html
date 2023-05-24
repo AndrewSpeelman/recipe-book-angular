@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-sm-12 center-image">
     <img
-      [src]="recipe.imagePath"
-      alt="{{recipe.name}}"
+      [src]="recipe?.imagePath"
+      alt=""
       class="img-responsive"
       style="max-height: 300px;">
   </div>
@@ -10,12 +10,12 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <h1>{{recipe.name}}</h1>
+    <h1>{{recipe?.name}}</h1>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-sm-2">
+  <div class="col-sm-2 ">
     <div class="btn-group col-sm-6" appDropdown>
       <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
         Manage Recipe
@@ -29,23 +29,23 @@
   </div>
   <div class="servings-and-times col-sm-10">
     <div class="col-sm-2">
-      <div class="row">
+      <div class="">
         <label>Servings:</label>
-        {{recipe.servings}}
+        {{recipe?.servings}}
       </div>
-      <div class="row">
+      <div class="">
         <label>Total Time:</label>
-        {{recipe.totalTime}}
+        {{recipe?.totalTime}}
       </div>
     </div>
     <div class="col-2">
-      <div class="row">
+      <div class="">
         <label>Cook Time:</label>
-        {{recipe.cookTime}}
+        {{recipe?.cookTime}}
       </div>
-      <div class="row">
+      <div class="">
         <label>Prep Time:</label>
-        {{recipe.prepTime}}
+        {{recipe?.prepTime}}
       </div>
     </div>
   </div>
@@ -53,21 +53,21 @@
 
 <div class="row" style="margin-bottom: 15px; margin-top: 15px">
   <div class="col-sm-12">
-    {{recipe.description}}
+    {{recipe?.description}}
   </div>
 </div>
 
 <div class="row">
   <div class="col-sm-3">
     <ul class="list-group list-group-flush">
-      <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
+      <li class="list-group-item" *ngFor="let ingredient of recipe?.ingredients">
         {{ingredient.name}}
       </li>
     </ul>
   </div>
   <div class="col-sm-9">
     <ul class="list-group list-group-flush list-group-numbered">
-      <li class="list-group-item" *ngFor="let instruction of recipe.instructions">
+      <li class="list-group-item" *ngFor="let instruction of recipe?.instructions">
         {{instruction.instruction}}
       </li>
     </ul>
