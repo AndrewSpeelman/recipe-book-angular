@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {RecipeService} from "../recipe.service";
+import {RecipeStore} from "../recipe-store.service";
 import {Recipe} from "../recipe.model";
 import {RecipeBackendService} from "../recipe-backend.service";
 import {Ingredient} from "../../shared/ingredient.model";
+import {v4 as uuid} from "uuid"
+
 
 @Component({
   selector: 'app-recipe-edit',
@@ -20,7 +22,7 @@ export class RecipeEditComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private recipeService: RecipeService,
+              private recipeService: RecipeStore,
               private recipeBackendService: RecipeBackendService) {
   }
 
@@ -95,10 +97,13 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit() {
+    //TODO: cannot use recipeForm.value because not all fields are in form (e.g. UUID)... so we lose data doing this.
     if (this.editMode) {
-      this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+      this.recipeService.updateRecipe(this.id, this.recipeForm.value)
     } else {
-      this.recipeService.addRecipe(this.recipeForm.value);
+      const newRecipe: Recipe = this.recipeForm.value
+      newRecipe.uuid = uuid()
+      this.recipeService.addRecipe(newRecipe);
     }
     this.onCancel();
   }

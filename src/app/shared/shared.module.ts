@@ -22,7 +22,6 @@ import {CommonModule} from "@angular/common";
     DropdownDirective,
     CommonModule
   ]
-  // entryComponents: [AlertComponent]  - not needed in angular 9+
 })
 export class SharedModule {
 
