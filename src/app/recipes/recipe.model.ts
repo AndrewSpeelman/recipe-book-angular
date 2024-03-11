@@ -6,7 +6,8 @@ export class Recipe {
   public description: string;
   public imagePath: string;
   public websiteURL: string;
-  // public createdBy: string;
+  public createdBy: string;
+  public createdByUUID: string;
 
   public prepTime: string;
   public cookTime: string;
@@ -27,7 +28,8 @@ export class Recipe {
               totalTime: string,
               recipeYield: string,
               ingredients: Ingredient[],
-              instructions: Instruction[]) {
+              instructions: Instruction[],
+              createdBy: string) {
     // instructions: string[]) {
     this.name = name;
     this.description = description;
@@ -39,6 +41,7 @@ export class Recipe {
     this.servings = recipeYield;
     this.ingredients = ingredients;
     this.instructions = instructions;
+    this.createdBy = createdBy;
   }
 }
 

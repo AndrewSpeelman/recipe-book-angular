@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Recipe} from "../recipes/recipe.model";
-import {exhaustMap, map, take} from "rxjs/operators";
+import {catchError, exhaustMap, map, take} from "rxjs/operators";
 import {AuthService} from "../auth/auth.service";
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
 
 export interface UserNode {
   [userId: string]: RecipeList[]
@@ -41,29 +41,38 @@ export class DataStorageService {
   }
 
   updateRecipe(recipe: Recipe): Observable<Recipe> {
+    //TODO probably not need user here anymore...
     return this.authService.user.pipe(
       take(1),
       exhaustMap((user) => {
-        return this.http.put<Recipe>('https://recipebook-shoppinglist-5da6f-default-rtdb.firebaseio.com/recipes2/' + user.id + '/' + recipe.uuid + '.json', recipe)
+        return this.http.put<Recipe>('https://recipebook-shoppinglist-5da6f-default-rtdb.firebaseio.com/recipes2/' + recipe.createdByUUID + '/' + recipe.uuid + '.json', recipe)
       })
     )
   }
 
   addRecipe(recipe: Recipe): Observable<Recipe> {
+    //TODO probably not need user here anymore...
     return this.authService.user.pipe(
       take(1),
       exhaustMap((user) => {
-        return this.http.put<Recipe>('https://recipebook-shoppinglist-5da6f-default-rtdb.firebaseio.com/recipes2/' + user.id + '/' + recipe.uuid + '.json', recipe)
+        return this.http.put<Recipe>('https://recipebook-shoppinglist-5da6f-default-rtdb.firebaseio.com/recipes2/' + recipe.createdByUUID + '/' + recipe.uuid + '.json', recipe)
       }))
   }
 
   deleteRecipe(recipe: Recipe): Observable<Recipe> {
+    //TODO probably not need user here anymore...
     return this.authService.user.pipe(
       take(1),
       exhaustMap((user) => {
-        console.log('delete-recipe', user)
-        return this.http.delete<Recipe>('https://recipebook-shoppinglist-5da6f-default-rtdb.firebaseio.com/recipes2/' + user.id + '/' + recipe.uuid + '.json')
+        return this.http.delete<Recipe>('https://recipebook-shoppinglist-5da6f-default-rtdb.firebaseio.com/recipes2/' + recipe.createdByUUID + '/' + recipe.uuid + '.json').pipe(
+          catchError(this.handleError)
+        )
       })
     )
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+    return throwError(error);
   }
 }
