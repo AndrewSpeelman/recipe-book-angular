@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, tap} from "rxjs/operators";
-import {BehaviorSubject, throwError} from "rxjs";
+import {BehaviorSubject, Observable, throwError} from "rxjs";
 import {User} from "./user.model";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
@@ -26,7 +26,7 @@ export class AuthService {
 
   }
 
-  public get user() {
+  public get user(): Observable<User> {
     return this.user$.asObservable()
   }
 
@@ -56,7 +56,7 @@ export class AuthService {
 
   autoLogin() {
     const userData: {
-      email: string,
+      _email: string,
       _id: string,
       _token: string,
       _tokenExpirationDate: string
@@ -65,7 +65,7 @@ export class AuthService {
       return;
     }
     const loadedUser = new User(
-      userData.email,
+      userData._email,
       userData._id,
       userData._token,
       new Date(userData._tokenExpirationDate)

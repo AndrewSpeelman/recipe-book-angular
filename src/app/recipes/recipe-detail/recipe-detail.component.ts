@@ -3,6 +3,10 @@ import {Recipe} from '../recipe.model';
 import {RecipeStore} from "../recipe-store.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {combineLatest} from "rxjs";
+import {AuthService} from "../../auth/auth.service";
+import {User} from "../../auth/user.model";
+
+declare var $: any
 
 @Component({
   selector: 'app-recipe-detail',
@@ -10,20 +14,30 @@ import {combineLatest} from "rxjs";
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
-  recipe: Recipe;
-  id: number;
+  recipe: Recipe
+  id: number
+  user: User
 
   constructor(private recipeStore: RecipeStore,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    combineLatest([this.route.params, this.recipeStore.recipes]).subscribe(([params, recipes]) => {
+    combineLatest([this.route.params, this.recipeStore.recipes, this.authService.user]).subscribe(([params, recipes, user]) => {
       this.recipe = recipes[+params['id']]
       this.id = +params['id']
+      this.user = user;
+      // disabled tooltip because couldn't get it to conditionally render.
+      // this.initTooltip();
     })
+  }
 
+  private initTooltip() {
+    $(document).ready(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    })
   }
 
   onAddToShoppingList() {
@@ -39,4 +53,7 @@ export class RecipeDetailComponent implements OnInit {
     this.router.navigate(['/recipes']);
   }
 
+  isNotRecipeOwner(): boolean {
+    return this.user.id != this.recipe.createdByUUID
+  }
 }

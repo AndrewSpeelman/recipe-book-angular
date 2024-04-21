@@ -6,6 +6,9 @@ import {Recipe} from "../recipe.model";
 import {RecipeBackendService} from "../recipe-backend.service";
 import {Ingredient} from "../../shared/ingredient.model";
 import {v4 as uuid} from "uuid"
+import {AuthService} from "../../auth/auth.service";
+import {take} from "rxjs/operators";
+import {User} from "../../auth/user.model";
 
 
 @Component({
@@ -19,19 +22,25 @@ export class RecipeEditComponent implements OnInit {
   recipeForm: FormGroup;
 
   recipeFromURL: Recipe;
+  currentUser: User
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private recipeService: RecipeStore,
-              private recipeBackendService: RecipeBackendService) {
+              private recipeBackendService: RecipeBackendService,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
+    this.route.params.pipe(take(1)).subscribe(
       (params: Params) => {
         this.id = +params['id'];
         this.editMode = params['id'] != null;
         this.initForm();
+      }
+    )
+    this.authService.user.pipe(take(1)).subscribe((user) => {
+        this.currentUser = user
       }
     )
   }
@@ -97,12 +106,13 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit() {
-    //TODO: cannot use recipeForm.value because not all fields are in form (e.g. UUID)... so we lose data doing this.
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, this.recipeForm.value)
     } else {
       const newRecipe: Recipe = this.recipeForm.value
       newRecipe.uuid = uuid()
+      newRecipe.createdBy = this.currentUser.email;
+      newRecipe.createdByUUID = this.currentUser.id;
       this.recipeService.addRecipe(newRecipe);
     }
     this.onCancel();
@@ -182,7 +192,8 @@ export class RecipeEditComponent implements OnInit {
             data['http://schema.org/totalTime'],
             data['http://schema.org/recipeYield'],
             recipeIngredients,
-            recipeInstructions);
+            recipeInstructions,
+            this.currentUser.id)
         },
         error => {
           console.log("ERROR");
