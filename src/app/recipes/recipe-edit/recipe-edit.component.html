@@ -117,10 +117,12 @@
           <div class="row"
                *ngFor="let ingredientCtrl of ingredientControl(); let i = index"
                [formGroupName]="i"
+               (keydown.enter)="onAddIngredient(i)"
                style="margin-top: 10px"
           >
             <div class="col-10 sm-padding">
               <input
+                #ingredientInput
                 type="text"
                 class="form-control"
                 formControlName="name"
@@ -149,10 +151,12 @@
           <div class="row"
                *ngFor="let ingredientCtrl of instructionControl(); let i = index"
                [formGroupName]="i"
+               (keydown.enter)="onAddInstruction(i)"
                style="margin-top: 10px;"
           >
             <div class="col-10">
               <input
+                #instructionInput
                 type="text"
                 class="form-control"
                 formControlName="instruction"

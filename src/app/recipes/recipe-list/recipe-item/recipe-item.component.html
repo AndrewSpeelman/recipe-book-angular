@@ -1,7 +1,8 @@
-<div style="cursor: pointer; width: 18rem; padding: 20px" [routerLink]="[index]" routerLinkActive="active"
+<div style="cursor: pointer; padding: 20px" [routerLink]="[index]" routerLinkActive="active"
      data-bs-dismiss="offcanvas" data-bs-target="#rbSidebar" class="card list-group-item-action w-100">
   <div class="d-flex justify-content-center align-items-center">
-    <img [src]="recipe.imagePath" alt="{{recipe.name}}" class="card-img-top" style="max-width: 100%; height: auto">
+    <img [src]="recipe.imagePath" alt="{{recipe.name}}" (error)="imageError = true" [hidden]="imageError"
+         class="card-img-top" style="max-width: 100%; height: auto">
   </div>
   <div class="card-body">
     <h4 class="card-title">{{ recipe.name }}</h4>

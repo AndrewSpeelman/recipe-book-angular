@@ -12,9 +12,11 @@
     <div class="col-sm-12 d-flex justify-content-center">
       <div class="list-group w-100">
         <app-recipe-item
+
           *ngFor="let recipeElement of filteredRecipes; let i = index"
           [recipe]="recipeElement"
-          [index]="i"></app-recipe-item>
+          [index]="i"
+          style="padding: 5px"></app-recipe-item>
       </div>
     </div>
   </div>

@@ -1,14 +1,14 @@
 <div class="container-fluid mt-3 my-md-4">
   <div class="row">
-    <aside class="col-sm-3">
+    <aside class="col-sm-4">
       <div id="rbSidebar" class="offcanvas-sm offcanvas-start" tabindex="-1" aria-labelledby="rbSidebarOffCanvasLabel"
            role="dialog">
-        <div class="offcanvas-body overflow-auto justify-content-center" style="max-height: 800px">
+        <div class="offcanvas-body overflow-auto overflow-x-hidden justify-content-center" style="max-height: 800px">
           <app-recipe-list></app-recipe-list>
         </div>
       </div>
     </aside>
-    <main class="col-sm-9">
+    <main class="col-sm-8">
       <router-outlet></router-outlet>
     </main>
   </div>

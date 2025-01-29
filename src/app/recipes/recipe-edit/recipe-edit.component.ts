@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {RecipeStore} from "../recipe-store.service";
@@ -20,6 +20,9 @@ export class RecipeEditComponent implements OnInit {
   id: number;
   editMode = false;
   recipeForm: FormGroup;
+
+  @ViewChildren('ingredientInput') ingredientInputs!: QueryList<ElementRef>;
+  @ViewChildren('instructionInput') instructionInputs!: QueryList<ElementRef>;
 
   recipeFromURL: Recipe;
   currentUser: User
@@ -126,21 +129,39 @@ export class RecipeEditComponent implements OnInit {
     return (<FormArray>this.recipeForm.get('instructions')).controls
   }
 
-  onAddIngredient() {
+  onAddIngredient(index?: number) {
     (<FormArray>this.recipeForm.get('ingredients')).push(
       new FormGroup({
         'name': new FormControl(null, Validators.required),
         'amount': new FormControl(null)
       })
     )
+
+    const newIndex = index !== undefined ? index + 1 : this.ingredientControl().length - 1; // Add at specific index or the end
+
+    setTimeout(() => {
+      const inputs = this.ingredientInputs.toArray();
+      if (inputs[newIndex]) {
+        inputs[newIndex].nativeElement.focus();
+      }
+    })
   }
 
-  onAddInstruction() {
+  onAddInstruction(index?: number) {
     (<FormArray>this.recipeForm.get('instructions')).push(
       new FormGroup({
         'instruction': new FormControl(null, Validators.required)
       })
     )
+
+    const newIndex = index !== undefined ? index + 1 : this.instructionControl().length - 1; // Add at specific index or the end
+
+    setTimeout(() => {
+      const inputs = this.instructionInputs.toArray();
+      if (inputs[newIndex]) {
+        inputs[newIndex].nativeElement.focus();
+      }
+    })
   }
 
   onCancel() {
@@ -204,7 +225,7 @@ export class RecipeEditComponent implements OnInit {
           console.log(this.recipeFromURL);
 
           for (let counter in this.recipeFromURL.ingredients) {
-            this.onAddIngredient();
+            this.onAddIngredient(0);
           }
 
           this.recipeForm.patchValue({
