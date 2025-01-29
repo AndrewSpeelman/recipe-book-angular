@@ -3,6 +3,7 @@ import {Recipe} from "../recipe.model";
 import {RecipeStore} from "../recipe-store.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-recipe-list',
@@ -11,7 +12,9 @@ import {Subscription} from "rxjs";
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   recipes: Recipe[];
+  filteredRecipes: Recipe[];
   subscription: Subscription;
+  searchControl = new FormControl('');
 
   constructor(private recipeService: RecipeStore,
               private router: Router,
@@ -24,8 +27,15 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         console.log('recipe-list fetched:')
         console.log(recipes)
         this.recipes = recipes;
+        this.filteredRecipes = recipes;
       }
     );
+
+    this.searchControl.valueChanges.subscribe((searchText: string) => {
+      this.filteredRecipes = [...this.recipes].filter((recipeCard) => {
+        return recipeCard.name.toLowerCase().includes(searchText.toLowerCase())
+      })
+    })
   }
 
   onNewRecipe() {

@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
+    "start-dev-local": "export NODE_OPTIONS=--openssl-legacy-provider; ng serve --proxy-config proxy.conf.json --configuration=development",
     "build": "export NODE_OPTIONS=--openssl-legacy-provider; ng build",
     "clean": "rm -rf node_modules",
     "reinstall": "npm run clean && npm install",

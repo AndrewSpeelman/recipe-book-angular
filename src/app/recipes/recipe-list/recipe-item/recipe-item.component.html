@@ -1,19 +1,10 @@
-<a
-  style="cursor: pointer"
-  [routerLink]="[index]"
-  routerLinkActive="active"
-  data-bs-dismiss="offcanvas"
-  data-bs-target="#rbSidebar"
-  class="list-group-item list-group-item-action">
-  <div class="float-left">
-    <h4 class="">{{ recipe.name }}</h4>
-    <p class="">{{ recipe.description }}</p>
+<div style="cursor: pointer; width: 18rem; padding: 20px" [routerLink]="[index]" routerLinkActive="active"
+     data-bs-dismiss="offcanvas" data-bs-target="#rbSidebar" class="card list-group-item-action w-100">
+  <div class="d-flex justify-content-center align-items-center">
+    <img [src]="recipe.imagePath" alt="{{recipe.name}}" class="card-img-top" style="max-width: 100%; height: auto">
   </div>
-  <span class="float-right">
-        <img
-          [src]="recipe.imagePath"
-          alt="{{recipe.name}}"
-          class="img-responsive"
-          style="max-height: 50px;">
-  </span>
-</a>
+  <div class="card-body">
+    <h4 class="card-title">{{ recipe.name }}</h4>
+    <p class="card-text">{{ recipe.description }}</p>
+  </div>
+</div>

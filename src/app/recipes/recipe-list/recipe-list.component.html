@@ -1,16 +1,21 @@
-<nav id="" class="">
+<nav id="" class="text-center">
   <div class="row">
-    <div class="col-sm-10">
+    <div class="col-sm-4">
       <button class="btn btn-success" (click)="onNewRecipe()">New Recipe</button>
+    </div>
+    <div class="col-sm-7">
+      <input class="form-control" type="text" placeholder="Filter recipes..." [formControl]="searchControl">
     </div>
   </div>
   <hr>
-  <div class="row">
-    <div class="col-sm-12 list-group">
-      <app-recipe-item
-        *ngFor="let recipeElement of recipes; let i = index"
-        [recipe]="recipeElement"
-        [index]="i"></app-recipe-item>
+  <div class="row justify-content-center">
+    <div class="col-sm-12 d-flex justify-content-center">
+      <div class="list-group w-100">
+        <app-recipe-item
+          *ngFor="let recipeElement of filteredRecipes; let i = index"
+          [recipe]="recipeElement"
+          [index]="i"></app-recipe-item>
+      </div>
     </div>
   </div>
 </nav>
